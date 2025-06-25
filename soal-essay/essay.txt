@@ -1,0 +1,62 @@
+1. Separation of Concerns artinya kita memisahkan tanggung jawab bagian-bagian dalam aplikasi. Jadi, tiap bagian punya tugasnya masing-masing.
+Misalnya:
+Komponen UI hanya bertugas menampilkan tampilan.
+Logic untuk ambil data dari API disimpan di tempat terpisah.
+Validasi form tidak ditulis di komponen, tapi di file lain.
+Struktur folder modern biasanya dibagi berdasarkan fitur misalnya fitur "produk", "auth, dll, dan di dalam setiap fitur juga dipisah lagi antara komponen, hooks, services untuk ambil data, dan sebagainya. Dengan begitu, proyek jadi rapi, gampang dicari, dan bisa dikembangkan oleh tim dengan lebih mudah.
+
+2. Perbedaan Layer Domain dan Presentation di Next.js
+Domain layer adalah tempat kita mendefinisikan struktur data dan aturan bisnis aplikasi. Misalnya, seperti bentuk data “Produk”, “User”, dan lain-lain.
+Presentation layer adalah bagian yang bertugas menampilkan data ke layar, seperti komponen React yang menampilkan daftar produk.
+Secara teknis, kita memisahkan keduanya dengan menaruh struktur data dan aturan di folder khusus biasanya entities, sedangkan komponen UI ditempatkan di folder components dalam tiap fitur.
+
+3. Kelebihan Server Actions dibanding API Routes untuk Form
+Server Actions adalah fitur baru di Next.js yang lebih praktis dibanding API Routes kalau kita ingin kirim data dari form. Kita gak perlu bikin file API terpisah—cukup nulis logic-nya langsung di server dan panggil dari form.
+Keuntungannya:
+Lebih sedikit kode.
+Langsung dijalankan di server, jadi lebih aman.
+Gak perlu mikir soal route atau method seperti POST atau GET.
+Tapi, kalau kita butuh endpoint yang bisa diakses dari luar (misalnya lewat mobile app), tetap pakai API Routes.
+
+4. Membuat Komponen dan Hooks Reusable Tanpa Tight Coupling
+Agar komponen dan hook bisa digunakan ulang di banyak tempat, kita harus pastikan mereka tidak terlalu tergantung pada fitur tertentu.
+Caranya:
+Komponen jangan langsung ambil data sendiri, tapi terima data dari luar lewat props.
+Hook dibuat umum dan menerima fungsi atau data dari luar, supaya bisa dipakai untuk banyak kasus.
+Dengan begitu, kita bisa pakai komponen atau hook tersebut di fitur manapun tanpa perlu ubah isinya.
+
+5. Mengatur Error Boundary dan Error Handling Server
+Untuk error yang terjadi di sisi klien seperti komponen gagal dirender, kita gunakan Error Boundary—ini seperti lapisan pengaman agar error tidak membuat seluruh aplikasi crash.
+Sedangkan untuk error di sisi server seperti gagal ambil data dari API, kita gunakan file khusus di Next.js yang secara otomatis menangani error jika terjadi di server. Jadi, pengguna tetap melihat tampilan yang ramah walaupun terjadi masalah.
+
+6. Penggunaan Zustand atau Context API untuk State Global (Contoh: Auth)
+Kalau kita ingin menyimpan data yang dibutuhkan di seluruh aplikasi, seperti data user yang sedang login, kita bisa gunakan Zustand atau Context API.
+Zustand lebih ringan dan cocok buat aplikasi menengah. Kita bisa menyimpan data login, token, atau role user di sana, dan mengambilnya dari komponen mana saja tanpa perlu kirim props.
+Context juga bisa digunakan, tapi lebih cocok untuk data yang jarang berubah atau skalanya kecil.
+
+7. Proteksi Halaman dan Role-Based Access di Next.js
+Untuk mencegah user yang tidak berhak membuka halaman tertentu (misalnya halaman admin), kita bisa menggunakan middleware. Middleware berjalan sebelum halaman dimuat, dan bisa mengecek apakah user sudah login dan punya hak akses.
+Lalu di dalam halaman, kita bisa pakai Zustand atau Context untuk mengecek lagi role user. Jadi proteksi dilakukan dua lapis: di awal (middleware), dan saat render halaman.
+
+8. Clean Code Saat Konsumsi Public API
+Agar kode kita bersih, pengambilan data dari API sebaiknya dipisah dari komponen. Jadi komponen tidak langsung melakukan fetch, tapi memanggil fungsi yang sudah dibuat khusus untuk ambil data.
+Dengan begitu:
+Komponen jadi lebih fokus ke tampilan.
+Logic pengambilan data bisa diatur, dites, dan diubah tanpa ganggu UI.
+
+9. Clean & Reusable Form Handling dengan React Hook Form + Zod
+Form dan validasinya juga sebaiknya dipisah.
+Validasi didefinisikan pakai Zod di file terpisah.
+Logic form-nya dibuat dalam custom hook.
+Komponen form hanya fokus untuk menampilkan input dan error-nya.
+Dengan cara ini, form lebih mudah digunakan ulang dan lebih terstruktur.
+
+10. Perbedaan Middleware dan Server Actions (Autentikasi & Otorisasi)
+Middleware dijalankan lebih awal, sebelum halaman dimuat. Sangat cocok untuk mengecek apakah user sudah login atau punya hak akses (misalnya admin). Kalau tidak, bisa langsung redirect.
+Server Actions digunakan saat user melakukan aksi, seperti men-submit form. Cocok untuk proses CRUD (buat, edit, hapus), bukan untuk proteksi akses.
+Jadi:
+Middleware → untuk kontrol akses dan proteksi halaman.
+Server Actions → untuk proses data dari form dan sejenisnya.
+
+
+
